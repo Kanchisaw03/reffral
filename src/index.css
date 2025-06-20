@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=EB+Garamond:wght@400;700&family=UnifrakturCook:wght@700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  width: 100%;
+  @apply bg-background text-primary font-body;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  @apply flex items-center justify-center;
+}
+
+a {
+  @apply text-accent hover:text-primary transition-colors duration-300;
+  text-decoration: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-accent/30 hover:bg-accent/50 transition-colors duration-300;
+  border-radius: 4px;
+}
+
+/* Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.floating {
+  animation: float 4s ease-in-out infinite;
+}

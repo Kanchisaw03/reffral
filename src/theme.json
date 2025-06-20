@@ -1,0 +1,63 @@
+{
+  "theme": "Cross Contract",
+  "mode": "dark",
+  "colors": {
+    "background": "#0C0C0C",
+    "surface": "#1A1A1A",
+    "primary": "#FFFFFF",
+    "accent": "#C0C0C0",
+    "glow": "#EAEAEA",
+    "border": "#888888",
+    "muted": "#444444"
+  },
+  "fonts": {
+    "heading": "'Cinzel Decorative', serif",
+    "body": "'EB Garamond', serif",
+    "accent": "'UnifrakturCook', cursive"
+  },
+  "effects": {
+    "textGlow": "0 0 10px rgba(255,255,255,0.6)",
+    "softShadow": "0 0 30px rgba(255,255,255,0.1)",
+    "borderGlow": "0 0 12px rgba(255,255,255,0.3)"
+  },
+  "shapes": {
+    "borderStyle": "double",
+    "borderRadius": "0px",
+    "frames": "ornamental with SVG overlays",
+    "iconography": "celestial, gothic, contract-style"
+  },
+  "components": {
+    "button": {
+      "bg": "#111111",
+      "text": "#FFFFFF",
+      "border": "#888888",
+      "hover": {
+        "bg": "#222222",
+        "border": "#C0C0C0",
+        "effect": "glow"
+      }
+    },
+    "card": {
+      "bg": "#0E0E0E",
+      "border": "1px solid #444",
+      "shadow": "softShadow"
+    },
+    "input": {
+      "bg": "#1B1B1B",
+      "text": "#FFFFFF",
+      "border": "#555",
+      "placeholder": "#888"
+    }
+  },
+  "layout": {
+    "maxWidth": "1024px",
+    "centered": true,
+    "padding": "2rem",
+    "frame": "svg_border.png"
+  },
+  "imagery": {
+    "borders": "custom-svg or PNG with vines, stars, crosses",
+    "symbols": ["stars", "crowns", "candles", "sigils", "feathers"],
+    "logoStyle": "engraved serif or calligraphic with glow"
+  }
+}
