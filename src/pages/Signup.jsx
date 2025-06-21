@@ -18,6 +18,23 @@ import FrameWrapper from '../components/FrameWrapper';
 import GlowButton from '../components/GlowButton';
 import SigilInput from '../components/SigilInput';
 
+// ThemeToggle component for dark mode
+function ThemeToggle() {
+  const [dark, setDark] = useState(true);
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark);
+  }, [dark]);
+  return (
+    <button
+      className="absolute top-4 right-4 bg-glass rounded-full p-2 shadow-glow"
+      onClick={() => setDark((d) => !d)}
+      aria-label="Toggle dark mode"
+    >
+      {dark ? '🌙' : '☀️'}
+    </button>
+  );
+}
+
 export default function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -49,7 +66,6 @@ export default function Signup() {
     e && e.preventDefault();
     setLoading(true);
     setError('');
-
     try {
       let userCredential;
       if (provider === 'google') {
@@ -59,13 +75,8 @@ export default function Signup() {
       }
       const user = userCredential.user;
       const referralCode = user.uid.slice(0, 6).toUpperCase();
-
-      console.log('✅ Logged in UID:', user.uid);
-      console.log('Referral Input:', referralInput);
-
       const userDocRef = doc(db, 'users', user.uid);
       const userDocSnap = await getDoc(userDocRef);
-
       if (!userDocSnap.exists()) {
         await setDoc(userDocRef, {
           name: name || user.displayName || '',
@@ -73,55 +84,39 @@ export default function Signup() {
           referralCount: 0,
         });
       }
-
       if (referralInput && referralInput !== referralCode) {
         const refDocRef = doc(db, 'referrals', referralInput);
         const refDocSnap = await getDoc(refDocRef);
-
         if (!refDocSnap.exists()) {
-          console.error('🚫 Referral code not found.');
           setError('Invalid referral code.');
           setLoading(false);
           return;
         }
-
         const refData = refDocSnap.data();
         const usedBy = refData.usedBy || [];
-
-        console.log('🧾 usedBy:', usedBy);
-
         if (refData.referrerUserId === user.uid) {
           setError('You cannot refer yourself.');
           setLoading(false);
           return;
         }
-
         if (usedBy.includes(user.uid)) {
           setError('You have already used this referral code.');
           setLoading(false);
           return;
         }
-
         try {
-          console.log('🔥 Adding UID to usedBy[]...');
           await updateDoc(refDocRef, {
             usedBy: arrayUnion(user.uid),
           });
-          console.log('✅ usedBy updated.');
-        
-          console.log('🔥 Incrementing referral count...');
           await updateDoc(doc(db, 'users', refData.referrerUserId), {
             referralCount: increment(1),
           });
-          console.log('✅ referralCount updated.');
         } catch (err) {
-          console.error('❌ Referral update error:', err.code, err.message);
           setError(`Referral write failed: ${err.message}`);
           setLoading(false);
           return;
         }
       }
-
       const myRefDocRef = doc(db, 'referrals', referralCode);
       const myRefDocSnap = await getDoc(myRefDocRef);
       if (!myRefDocSnap.exists()) {
@@ -130,10 +125,8 @@ export default function Signup() {
           usedBy: [],
         });
       }
-
       navigate('/dashboard');
     } catch (err) {
-      console.error('Signup error:', err.code, err.message);
       if (err.code === 'auth/email-already-in-use') {
         setError('This email is already in use. Please log in instead.');
       } else if (err.code === 'permission-denied') {
@@ -147,20 +140,21 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#18181b] via-[#23232a] to-[#18181b] flex items-center justify-center px-4 md:px-8">
-      <FrameWrapper>
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Sign Up</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-black relative px-4">
+      <ThemeToggle />
+      <FrameWrapper className="w-full max-w-md">
+        <h1 className="font-heading text-3xl text-glow mb-6 text-center">Sign Up</h1>
         {error && <div className="mb-4 text-center text-red-500 font-semibold bg-red-500/10 rounded-lg py-2 px-4">{error}</div>}
         <form onSubmit={handleSignup} className="space-y-4">
           <SigilInput label="Full Name" value={name} onChange={e => setName(e.target.value)} required />
           <SigilInput label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
           <SigilInput label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
           <SigilInput label="Referral Code (optional)" value={referralInput} onChange={e => setReferralInput(e.target.value.toUpperCase())} />
-          <GlowButton type="submit" disabled={loading} className="w-full">
+          <GlowButton type="submit" disabled={loading} className="w-full mt-2">
             {loading ? 'Signing up...' : 'Sign Up'}
           </GlowButton>
         </form>
-        <div className="border-t border-muted/40 my-6"></div>
+        <div className="border-t border-cyan-400/10 my-6"></div>
         <GlowButton
           onClick={e => handleSignup(e, 'google')}
           className="w-full"
@@ -169,8 +163,8 @@ export default function Signup() {
           {loading ? 'Loading...' : 'Sign up with Google'}
         </GlowButton>
         <div className="mt-6 text-center">
-          <span className="text-muted">Already have an account? </span>
-          <Link to="/login" className="text-blue-400 hover:underline">Login</Link>
+          <span className="text-cyan-200">Already have an account? </span>
+          <Link to="/login" className="underline text-neon">Login</Link>
         </div>
       </FrameWrapper>
     </div>

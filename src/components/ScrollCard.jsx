@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ScrollCard({ children, className = '' }) {
   return (
-    <div className={`bg-surface/90 rounded-xl shadow-lg p-6 my-4 ${className}`}>
+    <div className={`overflow-x-auto bg-glass rounded-xl shadow-card p-4 border border-cyan-400/10 ${className}`}>
       {children}
     </div>
   );

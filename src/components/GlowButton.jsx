@@ -4,9 +4,9 @@ export default function GlowButton({ children, className = '', ...props }) {
   return (
     <button
       {...props}
-      className={`bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-semibold px-6 py-2 rounded-xl shadow-lg hover:from-blue-500 hover:to-indigo-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 ${className}`}
+      className={`relative px-6 py-2 rounded-xl font-heading text-lg bg-black/60 bg-glass text-white shadow-[0_0_6px_1px_#38bdf8,0_0_12px_2px_#a78bfa10] transition-all duration-200 hover:scale-105 hover:shadow-[0_0_10px_2px_#38bdf8,0_0_20px_4px_#a78bfa20] focus:outline-none text-glow/40 font-semibold ${className}`}
     >
-      {children}
+      <span className="text-glow/80 text-white font-semibold">{children}</span>
     </button>
   );
 }

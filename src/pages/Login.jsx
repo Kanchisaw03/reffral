@@ -6,6 +6,22 @@ import FrameWrapper from '../components/FrameWrapper';
 import GlowButton from '../components/GlowButton';
 import SigilInput from '../components/SigilInput';
 
+function ThemeToggle() {
+  const [dark, setDark] = useState(true);
+  React.useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark);
+  }, [dark]);
+  return (
+    <button
+      className="absolute top-4 right-4 bg-glass rounded-full p-2 shadow-glow"
+      onClick={() => setDark((d) => !d)}
+      aria-label="Toggle dark mode"
+    >
+      {dark ? '🌙' : '☀️'}
+    </button>
+  );
+}
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -41,18 +57,19 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#18181b] via-[#23232a] to-[#18181b] flex items-center justify-center px-4 md:px-8">
-      <FrameWrapper>
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-950 to-black relative px-4">
+      <ThemeToggle />
+      <FrameWrapper className="w-full max-w-md">
+        <h1 className="font-heading text-3xl text-glow mb-6 text-center">Login</h1>
         {error && <div className="mb-4 text-center text-red-500 font-semibold bg-red-500/10 rounded-lg py-2 px-4">{error}</div>}
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <SigilInput label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
           <SigilInput label="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-          <GlowButton type="submit" disabled={loading} className="w-full">
+          <GlowButton type="submit" disabled={loading} className="w-full mt-2">
             {loading ? 'Logging in...' : 'Login'}
           </GlowButton>
         </form>
-        <div className="border-t border-muted/40 my-6"></div>
+        <div className="border-t border-cyan-400/10 my-6"></div>
         <GlowButton
           onClick={handleGoogleLogin}
           className="w-full"
@@ -61,8 +78,8 @@ export default function Login() {
           {loading ? 'Loading...' : 'Sign in with Google'}
         </GlowButton>
         <div className="mt-6 text-center">
-          <span className="text-muted">Don't have an account? </span>
-          <Link to="/signup" className="text-blue-400 hover:underline">Sign up</Link>
+          <span className="text-cyan-200">Don't have an account? </span>
+          <Link to="/signup" className="underline text-neon">Sign up</Link>
         </div>
       </FrameWrapper>
     </div>
